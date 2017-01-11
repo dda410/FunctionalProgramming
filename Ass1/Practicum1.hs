@@ -120,15 +120,21 @@ mymember xs (ys:y) = (xs == ys) || mymember xs y
 
 -- Exercise 14
 mysquaresum :: [Integer] -> Integer
-mysquaresum = undefined
+mysquaresum [] = 0
+mysquaresum t = head t * head t + mysquaresum (tail t)
+-- mysquaresum [2, 2, 3] == 17
+-- mysquaresum [2, 2, 3, 4] == 33
 
 -- Exercise 15
 range :: Integer -> Integer -> [Integer]
-range = undefined
+range x y = if x > y then [] else if x == y then y:[] else x : range (x+1) y
+-- range 10 2  == []
+-- range 2 10 == [2,3,4,5,6,7,8,9,10]
 
 -- Exercise 16
 myconcat :: [[a]] -> [a]
-myconcat = undefined
+myconcat [] = []
+myconcat x =  x !! 0 ++ (myconcat (tail x))
 
 -- Exercise 17
 insert :: Ord a => a -> [a] -> [a]
