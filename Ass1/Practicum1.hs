@@ -138,18 +138,21 @@ myconcat x =  x !! 0 ++ (myconcat (tail x))
 
 -- Exercise 17
 insert :: Ord a => a -> [a] -> [a]
-insert = undefined
+insert x [] = [x]
+insert x (y:ys) = if x < y then x:y:ys else y : insert x ys
 
 insertionsort :: Ord a => [a] -> [a]
-insertionsort = undefined
+insertionsort [x] = [x]
+insertionsort (x:xs) = insert x (insertionsort xs)
 
 -- Exercise 18
-quicksort :: Ord a => [a] -> [a]
-quicksort = undefined
+quicksort :: (Ord a) => [a] -> [a]
+quicksort [] = []
+quicksort (p:xs) = quicksort (filter (\x -> x < p) xs) ++ [p] ++ (quicksort (filter (\x -> x > p) xs) )
 
 -- Exercise 19
 evensB :: [Integer] -> [Integer]
-evensB = undefined
+evensB ys  = [x | x<- ys, even x]
 
 -- Exercise 20
 mymap :: (a -> b) -> [a] -> [b]
