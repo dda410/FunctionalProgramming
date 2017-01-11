@@ -99,15 +99,24 @@ doubleList (h:t) = (h * 2) : doubleList t
 
 -- Exercise 11
 myappend :: [a] -> [a] -> [a]
-myappend = undefined
+myappend []  ys = ys
+myappend (x:xs) ys = x : myappend xs ys
+--  myappend [1,2,3] [4,5,6] == [1,2,3,4,5,6]
+--  myappend [4,5,6] [1,2,3] == [4,5,6,1,2,3]
 
 -- Exercise 12
 myreverse :: [a] -> [a]
-myreverse = undefined
+myreverse [] = []
+myreverse t = last t : myreverse (init t)
+-- myreverse [1,2,3,4,5,6] == [6,5,4,3,2,1]
+-- myreverse [6,5,4,3,2,1] == [1,2,3,4,5,6]
 
 -- Exercise 13
 mymember :: (Eq a) => a -> [a] -> Bool
-mymember = undefined
+mymember xs [] = False
+mymember xs (ys:y) = (xs == ys) || mymember xs y
+-- mymember 2 [1,2,3] == True
+-- mymember 2 [1,0,3] == False
 
 -- Exercise 14
 mysquaresum :: [Integer] -> Integer
