@@ -199,11 +199,15 @@ myinitc (x:xs) = x:myinitc xs
 
 -- Exercise 26
 mysecondconcat :: [[a]] -> [a]
-mysecondconcat = undefined
+mysecondconcat xs = foldr (++) [] xs
 
 mysecondreverse :: [a] -> [a]
-mysecondreverse = undefined
+mysecondreverse xs = foldr (\ x acc -> acc ++ [x]) [] xs
 
 -- Exercise 27
 prefix :: [a] -> [[a]]
-prefix = undefined
+prefix xs = mysecondreverse (prefix' xs)
+prefix' :: [a] -> [[a]]
+prefix' [] = [[]]
+prefix' xs = xs : (prefix' (init xs))
+
