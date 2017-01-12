@@ -70,8 +70,12 @@ fib n = fib (n-1) + fib (n-2)
 ------------------------------------------------------------
 -- Exercise 8
 -- it is possible to define auxiliary functions
+helper :: Integer -> Integer -> Integer
+helper x y = if x /= y then x + helper ((x+1) y-1) else 0
+  
 strangeSummation :: Integer -> Integer
-strangeSummation = undefined
+strangeSummation x = x + strangeSummation (x+1) + ...
+
 
 -- Exercise 9
 lengthList :: [Integer] -> Integer
@@ -140,7 +144,6 @@ myconcat x =  x !! 0 ++ (myconcat (tail x))
 insert :: Ord a => a -> [a] -> [a]
 insert x [] = [x]
 insert x (y:ys) = if x < y then x:y:ys else y : insert x ys
-
 insertionsort :: Ord a => [a] -> [a]
 insertionsort [x] = [x]
 insertionsort (x:xs) = insert x (insertionsort xs)
@@ -174,16 +177,19 @@ compose f g x = f (g x)
 -- compose (\x -> x*x*x) (\x -> x -1) 4 == 27
 
 -- Exercise 23
-mylast :: [a] -> a
+mylast, mylast' :: [a] -> a
 mylast [] = error "no last element in empty list"
-mylast (x:[]) = x
-mylast (x:xs) = mylast xs
+mylast xs = if length xs == 1 then head xs else mylast (tail xs)
+mylast' [] = error "no last element in empty list"
+mylast' (x:[]) = x
+mylast' (x:xs) = mylast' xs
 -- mylast [1,2,3,4] == 4
 -- mylast [1,2,3,4,9] == 9
 
 -- Exercise 24
 mylastb :: [a] -> a
 mylastb [] = error "no last element on empty list"
+mylastb xs = if length xs == 1 then head xs else mylastb (drop (length xs -1) xs)
 --mylastb (x:[]) = x
 --mylastb xs = mylastb drop (head xs) xs  
 
