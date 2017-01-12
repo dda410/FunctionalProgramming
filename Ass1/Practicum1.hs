@@ -175,16 +175,27 @@ compose f g x = f (g x)
 
 -- Exercise 23
 mylast :: [a] -> a
-mylast = undefined
+mylast [] = error "no last element in empty list"
+mylast (x:[]) = x
+mylast (x:xs) = mylast xs
+-- mylast [1,2,3,4] == 4
+-- mylast [1,2,3,4,9] == 9
 
 -- Exercise 24
 mylastb :: [a] -> a
-mylastb = undefined
+mylastb [] = error "no last element on empty list"
+--mylastb (x:[]) = x
+--mylastb xs = mylastb drop (head xs) xs  
 
 -- Exercise 25
-myinit, myinitb :: [a] -> [a]
-myinit = undefined
-myinitb = undefined
+myinit, myinitb, myinitc :: [a] -> [a]
+myinit [] = error "no init part in empty list"
+myinit (x:xs) = if length xs == 0 then [] else  x:myinit xs 
+myinitb [] = error "no init part in empty list"
+myinitb xs = take (length xs - 1) xs
+myinitc [] = error "no init part in empty list" 
+myinitc (x:[]) = []
+myinitc (x:xs) = x:myinitc xs
 
 -- Exercise 26
 mysecondconcat :: [[a]] -> [a]
