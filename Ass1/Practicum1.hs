@@ -156,15 +156,22 @@ evensB ys  = [x | x<- ys, even x]
 
 -- Exercise 20
 mymap :: (a -> b) -> [a] -> [b]
-mymap = undefined
+mymap f [] = []
+mymap f (x:xs) = f x : mymap f xs
+-- mymap (\x -> succ x) [1,2,3] == [2,3,4]
+-- mymap (\x -> x*x) [1,2,3] == [1,4,9]
 
 -- Exercise 21
 twice :: (a -> a) -> a -> a
-twice = undefined
+twice f x = f (f x)
+-- twice (\x -> x*x) 2  == 16
+-- twice (\x -> x-2) 2 == -2
 
 -- Exercise 22
 compose :: (b -> c) -> (a -> b) -> a -> c
-compose = undefined
+compose f g x = f (g x)
+-- compose (\x -> x*x) (\x -> x+4) 2 == 36
+-- compose (\x -> x*x*x) (\x -> x -1) 4 == 27
 
 -- Exercise 23
 mylast :: [a] -> a
