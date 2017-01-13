@@ -5,7 +5,7 @@
 module Practicum1 where
 
 {-
-Name:           <Name and family name>
+Name:           <Dimitri Diomaiuta>
 VU-net id:      <dda410>
 Student number: <2553339>
 Discussed with: <In case you discussed the exercises with someone else,
