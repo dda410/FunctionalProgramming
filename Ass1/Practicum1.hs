@@ -12,8 +12,11 @@ Discussed with: <In case you discussed the exercises with someone else,
                  please mention his/her name(s) explicitly here>
 		 Remarks:        <In case something need special attention,
 		                  please tell us>
-				  Sources:        <in case you used sources such as books or webpages
-				                   please mention them here>
+				  Sources:        <I used the following webpages as main sources of programming
+                                                   tutorials:
+                                                     - http://learnyouahaskell.com/chapters
+                                                     - https://www.haskell.org/tutorial/
+				                   >
 						   -}
 
 -- Below you will find templates for the exercises. For each exercise,
@@ -23,9 +26,7 @@ Discussed with: <In case you discussed the exercises with someone else,
 
 -- Exercise 1
 maxi :: Integer -> Integer -> Integer
-maxi x y = if x > y
-              then x
-              else y             
+maxi x y = if x > y then x else y             
 -- maxi 2 3 == 3
 -- maxi 8 0 == 8
 
@@ -60,22 +61,20 @@ factorial x = if x == 1 then x else x * factorial (x - 1)
 
 -- Exercise 7
 fib :: Integer -> Integer
--- fib x = if x == 0 || x == 1 then x else fib (x - 1) + fib (x - 2)
 fib 0 = 0
 fib 1 = 1
 fib n = fib (n-1) + fib (n-2)
 -- fib 10 == 55
 -- fib 14 == 377
 
-------------------------------------------------------------
 -- Exercise 8
 -- it is possible to define auxiliary functions
 helper :: Integer -> Integer -> Integer
-helper x y = if x /= y then x + helper ((x+1) y-1) else 0
-  
+helper x y = if x /= (y + 1) then x + helper (x+1) y else 0
 strangeSummation :: Integer -> Integer
-strangeSummation x = x + strangeSummation (x+1) + ...
-
+strangeSummation x = helper x (x+7)
+-- strangeSummation 4 == 60 (that is 4+5+6+7+8+9+10+11)
+-- strangeSummation 7 == 84 (that is 7+8+9+10+11+12+13+14)
 
 -- Exercise 9
 lengthList :: [Integer] -> Integer
@@ -139,23 +138,33 @@ range x y = if x > y then [] else if x == y then y:[] else x : range (x+1) y
 myconcat :: [[a]] -> [a]
 myconcat [] = []
 myconcat x =  x !! 0 ++ (myconcat (tail x))
+-- myconcat [[1,2,3,4,5], [6,7,8]] == [1,2,3,4,5,6,7,8]
+-- myconcat [[6,7,8], [1,2,3,4,5]] == [6,7,8,1,2,3,4,5]
 
 -- Exercise 17
 insert :: Ord a => a -> [a] -> [a]
 insert x [] = [x]
 insert x (y:ys) = if x < y then x:y:ys else y : insert x ys
+-- insert 7 [5,6,8,9] == [5,6,7,8,9]
+-- insert 1 [2,3,4,5] == [1,2,3,4,5]
 insertionsort :: Ord a => [a] -> [a]
 insertionsort [x] = [x]
 insertionsort (x:xs) = insert x (insertionsort xs)
+-- insertionsort [8,9,4,3,1,6] == [1,3,4,6,8,9]
+-- insertionsort [1,10,34,2,1] == [1,1,2,10,34]
 
 -- Exercise 18
 quicksort :: (Ord a) => [a] -> [a]
 quicksort [] = []
-quicksort (p:xs) = quicksort (filter (\x -> x < p) xs) ++ [p] ++ (quicksort (filter (\x -> x > p) xs) )
+quicksort (p:xs) = quicksort (filter (\x -> x <= p) xs) ++ [p] ++ (quicksort (filter (\x -> x > p) xs) )
+-- quicksort [8,9,4,3,1,6] == [1,3,4,6,8,9]
+-- quicksort [1,10,34,2,1] == [1,1,2,10,34]
 
 -- Exercise 19
 evensB :: [Integer] -> [Integer]
-evensB ys  = [x | x<- ys, even x]
+evensB ys  = [x | x <- ys, even x]
+-- evensB [1,2,3,4,5,6] == [2,4,6]
+-- evensB [1,1,3,4,5,6] == [4,6]
 
 -- Exercise 20
 mymap :: (a -> b) -> [a] -> [b]
@@ -185,13 +194,15 @@ mylast' (x:[]) = x
 mylast' (x:xs) = mylast' xs
 -- mylast [1,2,3,4] == 4
 -- mylast [1,2,3,4,9] == 9
+-- mylast' [1,2,3,4] == 4
+-- mylast' [1,2,3,4,9] == 9
 
 -- Exercise 24
 mylastb :: [a] -> a
 mylastb [] = error "no last element on empty list"
 mylastb xs = if length xs == 1 then head xs else mylastb (drop (length xs -1) xs)
---mylastb (x:[]) = x
---mylastb xs = mylastb drop (head xs) xs  
+-- mylastb [1,2,3,4] == 4
+-- mylastb [1,2,3,4,9] == 9
 
 -- Exercise 25
 myinit, myinitb, myinitc :: [a] -> [a]
@@ -202,13 +213,23 @@ myinitb xs = take (length xs - 1) xs
 myinitc [] = error "no init part in empty list" 
 myinitc (x:[]) = []
 myinitc (x:xs) = x:myinitc xs
+-- myinit [1,2,3,4] == [1,2,3]
+-- myinit [1,2,3,4,9] == [1,2,3,4]
+-- myinitb [1,2,3,4] == [1,2,3]
+-- myinitb [1,2,3,4,9] == [1,2,3,4]
+-- myinitc [1,2,3,4] == [1,2,3]
+-- myinitc [1,2,3,4,9] == [1,2,3,4]
 
 -- Exercise 26
 mysecondconcat :: [[a]] -> [a]
 mysecondconcat xs = foldr (++) [] xs
+-- mysecondconcat [[1,2,3],[4,5,6]] == [1,2,3,4,5,6]
+-- mysecondconcat [[4,5,6], [1,2,3]] == [4,5,6,1,2,3]
 
 mysecondreverse :: [a] -> [a]
 mysecondreverse xs = foldr (\ x acc -> acc ++ [x]) [] xs
+-- mysecondreverse [1,2,3,4,5,6] == [6,5,4,3,2,1]
+-- mysecondreverse [6,5,4,3,2,1] == [1,2,3,4,5,6]
 
 -- Exercise 27
 prefix :: [a] -> [[a]]
@@ -216,4 +237,5 @@ prefix xs = mysecondreverse (prefix' xs)
 prefix' :: [a] -> [[a]]
 prefix' [] = [[]]
 prefix' xs = xs : (prefix' (init xs))
-
+-- prefix [1,2,3] ==  [[],[1],[1,2],[1,2,3]]
+-- prefix [3,2,1,0] == [[],[3],[3,2],[3,2,1],[3,2,1,0]]
