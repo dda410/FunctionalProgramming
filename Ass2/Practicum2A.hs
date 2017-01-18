@@ -92,30 +92,47 @@ churchnumeral n =
 backtointeger :: (Num a) => ChurchNumeral a -> a
 backtointeger cn = cn (+1) 0
 
-{- Show usage here -}
+{- Show usage here
+   backtointeger (churchnumeral 9)
+   backtointeger (churchnumeral (9*2))
+   backtointeger (churchnumeral (mod 9 4))
+   backtointeger (churchnumeral ((\x -> x * x) 6))
+-}
 
 -- Exercise 2
 churchequality :: (Eq a, Num a) => ChurchNumeral a -> ChurchNumeral a -> Bool
-churchequality = undefined
+churchequality x y = backtointeger x == backtointeger y
+-- churchequality (churchnumeral 2) (churchnumeral 2) == True
+-- churchequality (churchnumeral 2) (churchnumeral 3) == False
 
 -- Exercise 3
 successor :: (Num a) => FuncOneArg a
-successor = undefined
+successor cn = (\h -> h . cn h)
+-- backtointeger (successor (churchnumeral 4)) == 5
+-- backtointeger (successor (churchnumeral 5)) == 6
 
 -- Exercise 4
 successorb :: (Num a) => FuncOneArg a
-successorb = undefined
+successorb cn = (\h -> cn h . h)
+-- backtointeger (successorb (churchnumeral 4)) == 5
+-- backtointeger (successorb (churchnumeral 5)) == 6
 
 -- Exercise 5
 apply1 :: (Eq a, Num a) => FuncOneArg a -> a -> a
-apply1 = undefined
+apply1 f x = backtointeger (f (churchnumeral x))
+-- apply1 successor 5 == 6
+-- apply1 successor 6 == 7
 
 -- Exercise 6
 addition :: (Num a) => FuncTwoArgs a
-addition = undefined
+addition cn1 cn2 = (\h -> (cn1 h) . (cn2 h))  
+-- backtointeger (addition (churchnumeral 1)  (churchnumeral 2)) == 3
+-- backtointeger (addition (churchnumeral 5)  (churchnumeral 2)) == 7
 
 multiplication :: (Num a) => FuncTwoArgs a
-multiplication = undefined
+multiplication cn1 cn2 = (\h -> (cn1 h)) . (\h -> (cn2 h))
+-- backtointeger (multiplication  (churchnumeral 2)  (churchnumeral 3)) == 6
+-- backtointeger (multiplication  (churchnumeral 2)  (churchnumeral 7)) == 14
 
 -- skip exponentiation !
 
@@ -123,6 +140,8 @@ multiplication = undefined
 -- given
 -- apply2  that can be used for addition and for multiplication
 apply2 f n m = backtointeger (f (churchnumeral n) (churchnumeral m) ) 
+-- apply2 addition 2 4 == 6
+-- apply2 multiplication 2 4 == 8
 
 -- ---------------------
 -- Exercises Binary Trees
