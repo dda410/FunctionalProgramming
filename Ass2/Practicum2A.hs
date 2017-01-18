@@ -47,31 +47,32 @@ threefolds :: [Integer]
 threefolds = map (\x -> x * 3) naturals
 
 -- Exercise 4
-removeif :: (a -> Bool) -> [a] -> [a]
-removeif = undefined
-
+--removeif :: (a -> Bool) -> [a] -> [a]
+--removeif xs = if mod xs 3 == 0 then True else False
 nothreefolds :: [Integer]
-nothreefolds = undefined
+nothreefolds = filter (\x -> mod x 3 /= 0) naturals
 
 -- Exercise 5
 allnfolds :: Integer -> [Integer]
-allnfolds = undefined
+allnfolds y = map (\x -> x * y) naturals
 
 -- Exercise 6
 allnaturalsexceptnfolds :: Integer -> [Integer]
-allnaturalsexceptnfolds = undefined
+allnaturalsexceptnfolds y = filter (\x -> mod x y /= 0) naturals
 
 -- Exercise 7
 allelementsexceptnfolds :: Integer -> [Integer] -> [Integer]
-allelementsexceptnfolds = undefined
+allelementsexceptnfolds y xs = filter (\x -> mod x y /= 0) xs
 
 -- Exercise 8
 eratosthenes :: [Integer]
-eratosthenes = undefined
+eratosthenes =  eratosthenes' (tail naturals)
+eratosthenes' (p:xs) = p : eratosthenes' [x | x <- xs, x `mod` p /= 0]
 
 -- Exercise 9
 fibonacci :: [Integer]
-fibonacci = undefined
+fibonacci = 0 : 1 : zipWith (+) fibonacci (tail fibonacci)
+
 
 -- -----------------------
 -- Exercise Church Numerals
