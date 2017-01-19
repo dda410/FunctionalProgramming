@@ -209,5 +209,15 @@ gPerfect x y z s = do
 
 -- Exercise 4
 v3 :: Double -> Double -> Double -> Double -> MaybeOne Double
-v3 x y z s = undefined
+v3 x y z s = do
+  xDBy <- x // y
+  zDBs <- z // s
+  yDBs <- y // s
+  left <- xDBy // (zDBs - yDBs)
+  zDBx <- z // x
+  let right = yDBs + zDBx
+  let result = left - right
+  return result
+  
+  
 
