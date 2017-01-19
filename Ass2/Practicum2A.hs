@@ -108,7 +108,7 @@ churchequality x y = backtointeger x == backtointeger y
 -- Exercise 3
 successor :: (Num a) => FuncOneArg a
 successor cn = (\h -> h . cn h)
--- backtointeger (successor (churchnumeral 4)) == 5
+-- backtointeger (successor (ch urchnumeral 4)) == 5
 -- backtointeger (successor (churchnumeral 5)) == 6
 
 -- Exercise 4
@@ -151,19 +151,27 @@ data BinaryTree a = Leaf | Node (BinaryTree a) a (BinaryTree a)
 
 -- Exercise 1
 numberofnodes :: BinaryTree a -> Integer
-numberofnodes = undefined
+numberofnodes (Leaf) = 0
+numberofnodes (Node a b c) = 1 + numberofnodes a + numberofnodes c
+-- numberofnodes (Node (Node Leaf 1 Leaf) 2 (Node Leaf 3 Leaf)) == 3
 
 -- Exercise 2
 height :: BinaryTree a -> Integer
-height = undefined
+height (Leaf) = 0 
+height (Node a b c) = 1 + if height a > height c then height a else height c
+-- height (Node (Node Leaf 1 Leaf) 2 (Node (Node Leaf 3 Leaf) 4 (Node Leaf 5 Leaf) ) ) == 3
 
 -- Exercise 3
 sumnodes :: (Num a) => BinaryTree a -> a
-sumnodes = undefined
+sumnodes (Leaf) = 0
+sumnodes (Node a b c) = b + sumnodes a + sumnodes c
+-- sumnodes (Node (Node Leaf 1 Leaf) 2 (Node Leaf 3 Leaf)) == 6
 
 -- Exercise 4
 mirror :: BinaryTree a -> BinaryTree a
-mirror = undefined
+mirror (Leaf) = Leaf
+mirror (Node a b c) = Node (mirror c) b (mirror a)
+-- mirror (Node (Node Leaf 1 Leaf) 2 (Node (Node Leaf 3 Leaf) 4 (Node Leaf 5 Leaf) ) ) == Node (Node (Node Leaf 5 Leaf) 4 (Node Leaf 3 Leaf)) 2 (Node Leaf 1 Leaf)
 
 -- Exercise 5
 flatten :: BinaryTree a -> [a]
