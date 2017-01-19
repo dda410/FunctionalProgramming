@@ -174,12 +174,17 @@ mirror (Node a b c) = Node (mirror c) b (mirror a)
 -- mirror (Node (Node Leaf 1 Leaf) 2 (Node (Node Leaf 3 Leaf) 4 (Node Leaf 5 Leaf) ) ) == Node (Node (Node Leaf 5 Leaf) 4 (Node Leaf 3 Leaf)) 2 (Node Leaf 1 Leaf)
 
 -- Exercise 5
+-- In-order traversal: from smaller to bigger
 flatten :: BinaryTree a -> [a]
-flatten = undefined
+flatten (Leaf) = []
+flatten (Node a b c) = (flatten a) ++ [b] ++ (flatten c)
+-- flatten (Node (Node Leaf 1 Leaf) 2 (Node (Node Leaf 3 Leaf) 4 (Node Leaf 5 Leaf) ) ) == [1,2,3,4,5]
 
 -- Exercise 6
 treemap :: (a -> b) -> BinaryTree a -> BinaryTree b
-treemap = undefined
+treemap f (Leaf) = Leaf
+treemap f (Node a b c) = Node (treemap f a) (f b) (treemap f c) 
+-- treemap (\x -> x + 1) (Node (Node Leaf 1 Leaf) 2 (Node (Node Leaf 3 Leaf) 4 (Node Leaf 5 Leaf) ) ) == Node (Node Leaf 2 Leaf) 3 (Node (Node Leaf 4 Leaf) 5 (Node Leaf 6 Leaf))
 
 -- -------------------------
 -- Exercises Binary Search Trees
