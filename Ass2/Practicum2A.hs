@@ -232,7 +232,12 @@ insert x (Node a b c) =
 
 -- Exercise 5
 createbinarysearchtree :: (Ord a, Eq a) => [a] -> BinaryTree a
-createbinarysearchtree = undefined
+createbinarysearchtree [] = error "cannot build BST from empty list"
+createbinarysearchtree (h:[]) = (Node Leaf h Leaf)
+createbinarysearchtree (h:t) = createbinarysearchtree' t (Node Leaf h Leaf)
+createbinarysearchtree' :: (Ord a, Eq a) => [a] -> BinaryTree a -> BinaryTree a
+createbinarysearchtree' (h:[]) (Node a b c) = insert h (Node a b c)
+createbinarysearchtree' (h:t) (Node a b c) = createbinarysearchtree' t (insert h (Node a b c))
 
 -- Exercise 6
 remove :: (Ord a, Eq a) => a -> BinaryTree a -> BinaryTree a
