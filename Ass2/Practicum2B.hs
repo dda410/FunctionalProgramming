@@ -102,7 +102,24 @@ g x y z s =
 
 -- Exercise 2
 v1 :: Double -> Double -> Double -> Double -> MaybeOne Double
-v1 x y z s = undefined
+v1 x y z s =
+  case x // y of
+    NoResult -> NoResult
+    Result xDBy ->
+      case z // s of
+        NoResult -> NoResult
+        Result zDBs ->
+          case y // s of
+            NoResult -> NoResult
+            Result yDBs ->
+              case xDBy // (zDBs - yDBs) of
+                NoResult -> NoResult
+                Result left ->
+                  case z // x of
+                    NoResult -> NoResult
+                    Result zDBx ->
+                      let right = yDBs + zDBx
+                          in Result (left - right)
 
 -- Example f using >==
 fBetter :: Double -> Double -> Double -> MaybeOne Double
@@ -134,7 +151,25 @@ gBetter x y z s =
 
 -- Exercise 3
 v2 :: Double -> Double -> Double -> Double -> MaybeOne Double
-v2 x y z s = undefined
+v2 x y z s =
+  (x // y) >>=
+  (\xDBy ->
+     (z // s) >>=
+     (\zDBs ->
+        (y // s) >>=
+        (\yDBs ->
+           (xDBy // (zDBs - yDBs)) >>=
+           (\left ->
+              (z // x) >>=
+              (\zDBx ->
+                 let right = yDBs + zDBx
+                 in Result (left - right)
+              )
+           )
+        )
+     )
+  )
+
 
 -- Example f using do
 fDo :: Double -> Double -> Double -> MaybeOne Double
