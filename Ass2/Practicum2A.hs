@@ -207,15 +207,28 @@ largerthan x (Node a b c) =
 
 -- Exercise 2
 isbinarysearchtree :: (Ord a) => BinaryTree a -> Bool
-isbinarysearchtree = undefined
+isbinarysearchtree (Leaf) = True
+isbinarysearchtree (Node a b c) = ((smallerthan b a) && (largerthan b c) && (isbinarysearchtree a) && (isbinarysearchtree c))
 
 -- Exercise 3
 iselement :: (Ord a, Eq a) => a -> BinaryTree a -> Bool
-iselement = undefined
+iselement x (Leaf) = False
+iselement x (Node a b c) =
+  if x == b
+  then True
+  else if x < b
+  then (iselement x a)
+  else (iselement x c)
 
 -- Exercise 4
 insert :: (Ord a, Eq a) => a -> BinaryTree a -> BinaryTree a
-insert = undefined
+insert x (Leaf) = (Node Leaf x Leaf)
+insert x (Node a b c) =
+  if x == b
+  then (Node a b c)
+  else if x < b
+  then (Node (insert x a) b (c))
+  else (Node (a) b (insert x c))
 
 -- Exercise 5
 createbinarysearchtree :: (Ord a, Eq a) => [a] -> BinaryTree a
