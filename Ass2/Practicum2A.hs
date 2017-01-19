@@ -192,10 +192,18 @@ treemap f (Node a b c) = Node (treemap f a) (f b) (treemap f c)
 
 -- Exercise 1
 smallerthan :: (Ord a) => a -> BinaryTree a -> Bool
-smallerthan = undefined
+smallerthan x (Leaf) = True
+smallerthan x (Node a b c) =
+  if x > b
+  then (smallerthan x c)
+  else False
 
 largerthan :: (Ord a) => a -> BinaryTree a -> Bool
-largerthan = undefined
+largerthan x (Leaf) = True
+largerthan x (Node a b c) =
+  if x < b
+  then (largerthan x a)
+  else False
 
 -- Exercise 2
 isbinarysearchtree :: (Ord a) => BinaryTree a -> Bool
