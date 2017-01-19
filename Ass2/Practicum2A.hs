@@ -113,7 +113,7 @@ successor cn = (\h -> h . cn h)
 
 -- Exercise 4
 successorb :: (Num a) => FuncOneArg a
-successorb cn = (\h -> cn h . h)
+successorb = (\x s z -> x s (s z))
 -- backtointeger (successorb (churchnumeral 4)) == 5
 -- backtointeger (successorb (churchnumeral 5)) == 6
 
