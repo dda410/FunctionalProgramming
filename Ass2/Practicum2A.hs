@@ -241,4 +241,32 @@ createbinarysearchtree' (h:t) (Node a b c) = createbinarysearchtree' t (insert h
 
 -- Exercise 6
 remove :: (Ord a, Eq a) => a -> BinaryTree a -> BinaryTree a
-remove = undefined
+remove x (Leaf) = Leaf
+remove x (Node a b c) =
+  if x < b
+  then (Node (remove x a) b c)
+  else if x > b
+  then (Node a b (remove x c))
+  else if (a == Leaf) && (c == Leaf)
+  then Leaf
+  else if a == Leaf
+  then (Node Leaf (value c) Leaf)
+  else if c == Leaf
+  then (Node Leaf (value a) Leaf)
+  else
+    let minelement = value (smallest (Node a b c))
+          in (Node (remove minelement a) minelement c)
+-- remove 3 (Node (Node (Node Leaf 2 Leaf) 3 (Node Leaf 4 Leaf) ) 5 (Node (Node Leaf 6 Leaf) 8 (Node Leaf 10 Leaf) ) ) == Node (Node Leaf 2 (Node Leaf 4 Leaf)) 5 (Node (Node Leaf 6 Leaf) 8 (Node Leaf 10 Leaf))
+-- remove 2 (Node (Node (Node Leaf 2 Leaf) 3 (Node Leaf 4 Leaf) ) 5 (Node (Node Leaf 6 Leaf) 8 (Node Leaf 10 Leaf) ) ) == Node (Node Leaf 3 (Node Leaf 4 Leaf)) 5 (Node (Node Leaf 6 Leaf) 8 (Node Leaf 10 Leaf)) 
+
+-- value returns the value of a node
+value (Node a b c) = b
+
+-- smallest returns the smallest node of a tree
+smallest :: (Ord a, Eq a) => BinaryTree a -> BinaryTree a
+smallest (Leaf) = Leaf 
+smallest (Node a b c) =
+  if smallest a /= Leaf
+  then smallest a
+  else (Node Leaf b Leaf)
+  
