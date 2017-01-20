@@ -16,17 +16,32 @@ Sources:        <in case you used sources such as books or webpages
 -- Exercise Tower of Hanoi
 ----------------------------
 
+-- The disks are numbered as follows: the one at the top will be disk number 1 (the smallest one)
+-- the one at the bottom will be disk number n (where n is the total number of disks)
+-- the other disks will be numbered increasingly from 1 to n
 type Rod = String
 type Move = (Integer, Rod, Rod)
 hanoi :: Integer -> Rod -> Rod -> Rod -> [Move]
 hanoi 0 _ _ _ = []
-hanoi 1 start end _ = [(1, start, end)]
 hanoi n start end temp =
       let nMinusOne = subtract 1 n
+          diskno = nMinusOne + 1
               in hanoi nMinusOne start temp end ++
-                        hanoi 1 start end temp ++
+                 [(diskno, start, end)] ++
                                hanoi nMinusOne temp end start
-
+-- hanoi 3 "a" "b" "c" == [(1,"a","b"),(2,"a","c"),(1,"b","c"),(3,"a","b"),(1,"c","a"),(2,"c","b"),(1,"a","b")]
+-- An ascii art example of the previous command execution:
+--
+--  start:           end:
+--
+--  A   B   C        A   B   C
+--  +   +   +        +   +   +
+--  |   |   |        |   |   |
+--  |   |   |        |   |   |
+--  1   |   |        |   1   |
+--  2   |   |        |   2   |
+--  3   |   |        |   3   |
+--  +   +   +        +   +   +
 
 -- -------------------------
 -- Exercises Infinite Lists
@@ -47,8 +62,6 @@ threefolds :: [Integer]
 threefolds = map (\x -> x * 3) naturals
 
 -- Exercise 4
---removeif :: (a -> Bool) -> [a] -> [a]
---removeif xs = if mod xs 3 == 0 then True else False
 nothreefolds :: [Integer]
 nothreefolds = filter (\x -> mod x 3 /= 0) naturals
 
@@ -107,13 +120,14 @@ churchequality x y = backtointeger x == backtointeger y
 
 -- Exercise 3
 successor :: (Num a) => FuncOneArg a
-successor cn = (\h -> h . cn h)
--- backtointeger (successor (ch urchnumeral 4)) == 5
+successor = (\x s z -> s (x s z))
+-- backtointeger (successor (churchnumeral 4)) == 5
 -- backtointeger (successor (churchnumeral 5)) == 6
 
 -- Exercise 4
 successorb :: (Num a) => FuncOneArg a
 successorb = (\x s z -> x s (s z))
+--successorc cn = (\h -> h . cn h)
 -- backtointeger (successorb (churchnumeral 4)) == 5
 -- backtointeger (successorb (churchnumeral 5)) == 6
 
@@ -250,9 +264,9 @@ remove x (Node a b c) =
   else if (a == Leaf) && (c == Leaf)
   then Leaf
   else if a == Leaf
-  then (Node Leaf (value c) Leaf)
+  then c
   else if c == Leaf
-  then (Node Leaf (value a) Leaf)
+  then a
   else
     let minelement = value (smallest (Node a b c))
           in (Node (remove minelement a) minelement c)
