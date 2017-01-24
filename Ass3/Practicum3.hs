@@ -19,10 +19,12 @@ data IntExp  = Lit Int | Add IntExp IntExp | Mul IntExp IntExp
 showintexp :: IntExp -> String
 showintexp (Lit x) = show x
 showintexp (Add (Lit x) (Lit y)) = "(" ++ show x ++ "+" ++ show y ++ ")"
-showintexp (Mul (Lit x) (Lit y)) = "(" ++ show x ++ "x" ++ show y ++ ")"
+showintexp (Mul (Lit x) (Lit y)) = "(" ++ show x ++ "*" ++ show y ++ ")"
 
 evalintexp :: IntExp -> Int
-evalintexp = undefined
+evalintexp (Lit x) = x
+evalintexp (Add (Lit x) (Lit y)) = x+y
+evalintexp (Mul (Lit x) (Lit y)) = x*y
 
 -- Exercise 2
 data Term = S | K | I | App Term Term
@@ -31,7 +33,10 @@ instance Show Term where
   show a = showterm a
 
 showterm :: Term -> String
-showterm = undefined
+showterm S = "S"
+showterm K = "K"
+showterm I = "I"
+showterm (App t1 t2) = "(" ++ (showterm t1) ++ (showterm t2) ++ ")"
 
 isredex :: Term -> Bool
 isredex = undefined
