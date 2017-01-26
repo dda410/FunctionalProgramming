@@ -43,19 +43,18 @@ defaultOptions  = Options
 -- | Algorithm implementation
 nextGeneration :: World -> World
 nextGeneration w = S.difference (S.union w (newAliveCells w)) (deadCells w)
---nextGeneration w = deadCells w
 
 -- | Helper functions
 deadCells :: World -> World
---deadCells w = S.difference w (S.filter (\x -> (neighborCountIn x w) < 2 || (neighborCountIn x w) > 3 ) w)
 deadCells w =  (S.filter (\x -> (neighborCountIn x w) < 2 || (neighborCountIn x w) > 3 ) w)
 
 newAliveCells :: World -> World
-newAliveCells w = S.unions [newAliveCells' w leftCell, newAliveCells' w rightCell, newAliveCells' w upCell, newAliveCells' w downCell, newAliveCells' w upRightCell, newAliveCells' w upLeftCell, newAliveCells' w downRightCell, newAliveCells' w downLeftCell]
+newAliveCells w = S.unions [newAliveCells' w leftCell, newAliveCells' w rightCell, newAliveCells' w upCell, newAliveCells' w downCell, newAliveCells' w upRightCell, newAliveCells' w upLeftCell, newAliveCells' w downRightCell]
 newAliveCells' :: World -> (Cell -> Cell) -> World
 newAliveCells' w f = (S.map (\x -> (f x)) (S.filter (\x -> (neighborCountIn (f x) w) == 3) w))
 
-leftCell, rightCell, upCell, downCell, upRightCell, upLeftCell, downRightCell, downLeftCell :: Cell -> Cell
+-- Set of functions that returns the cells next to a given one
+leftCell, rightCell, upCell, downCell, upRightCell, upLeftCell, downRightCell :: Cell -> Cell
 leftCell (x,y) = (x-1, y)
 rightCell (x,y) = (x+1, y)
 upCell (x,y) = (x, y+1)
@@ -63,7 +62,6 @@ downCell (x,y) = (x, y-1)
 upRightCell (x,y) = (x+1, y+1)
 upLeftCell (x,y) = (x-1, y+1)
 downRightCell (x,y) = (x+1, y-1)
-downLeftCell (x,y) = (x-1, y-1)
 
 neighborCountIn :: Cell -> World -> Int
 neighborCountIn c w = size
