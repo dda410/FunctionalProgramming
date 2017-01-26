@@ -42,8 +42,8 @@ defaultOptions  = Options
 
 -- | Algorithm implementation
 nextGeneration :: World -> World
---nextGeneration w = S.difference (S.union w (newAliveCells w)) (deadCells w)
-nextGeneration w = deadCells w
+nextGeneration w = S.difference (S.union w (newCells w)) (deadCells w)
+--nextGeneration w = deadCells w
 
 -- | Helper functions
 deadCells :: World -> World
@@ -51,11 +51,19 @@ deadCells :: World -> World
 deadCells w =  (S.filter (\x -> (neighborCountIn x w) < 2 || (neighborCountIn x w) > 3 ) w)
 
 newAliveCells :: World -> World
-newAliveCells w = S.union (S.filter (\x -> (neighborCountIn (leftCell x) w) == 3) w) (S.filter (\x -> (neighborCountIn (downCell x) w) == 3) w)
+newAliveCells w = S.union (S.union (S.map (\x -> leftCell x) (S.filter (\x -> (neighborCountIn (leftCell x) w) == 3) w)) (S.map (\x -> downCell x) (S.filter (\x -> (neighborCountIn (downCell x) w) == 3) w))) (S.union (S.map (\x -> rightCell x) (S.filter (\x -> (neighborCountIn (rightCell x) w) == 3) w)) (S.map (\x -> upCell x) (S.filter (\x -> (neighborCountIn (upCell x) w) == 3) w)))
+
+newCells :: World -> World
+newCells w = S.union (S.union (newAliveCells' w leftCell) (newAliveCells' w rightCell)) (S.union (newAliveCells' w upCell) (newAliveCells' w downCell))
+newAliveCells' :: World -> (Cell -> Cell) -> World
+newAliveCells' w f = (S.map (\x -> (f x)) (S.filter (\x -> (neighborCountIn (f x) w) == 3) w))
 
 leftCell :: Cell -> Cell
 leftCell (x,y) = (x-1, y)
-
+rightCell :: Cell -> Cell
+rightCell (x,y) = (x+1, y)
+upCell :: Cell -> Cell
+upCell (x,y) = (x, y+1)
 downCell :: Cell -> Cell
 downCell (x,y) = (x, y-1)
 
