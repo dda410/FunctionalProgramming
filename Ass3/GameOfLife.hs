@@ -8,7 +8,7 @@ import Control.Concurrent
 import Control.Monad
 import Data.Array.IArray
 import Data.List as L
-import Data.Set as S hiding (map)
+import Data.Set as S 
 import System.Console.GetOpt
 import System.Environment
 import System.Process
@@ -42,11 +42,23 @@ defaultOptions  = Options
 
 -- | Algorithm implementation
 nextGeneration :: World -> World
-nextGeneration w = undefined
+--nextGeneration w = S.difference (S.union w (newAliveCells w)) (deadCells w)
+nextGeneration w = deadCells w
 
 -- | Helper functions
--- deadCells :: World -> World
--- deadCells w = undefined
+deadCells :: World -> World
+--deadCells w = S.difference w (S.filter (\x -> (neighborCountIn x w) < 2 || (neighborCountIn x w) > 3 ) w)
+deadCells w =  (S.filter (\x -> (neighborCountIn x w) < 2 || (neighborCountIn x w) > 3 ) w)
+
+newAliveCells :: World -> World
+newAliveCells w = S.union (S.filter (\x -> (neighborCountIn (leftCell x) w) == 3) w) (S.filter (\x -> (neighborCountIn (downCell x) w) == 3) w)
+
+leftCell :: Cell -> Cell
+leftCell (x,y) = (x-1, y)
+
+downCell :: Cell -> Cell
+downCell (x,y) = (x, y-1)
+
 
 neighborCountIn :: Cell -> World -> Int
 neighborCountIn c w = size
@@ -64,7 +76,7 @@ neighbors l@(x,y) = fromList
 -- | IO functions
 showWorld :: Options -> World -> String
 showWorld (Options _ a d _ (xs,ys,xe,ye) _ _) w =
-    unlines $ map showCell <$> visibleCells
+    unlines $ L.map showCell <$> visibleCells
   where visibleCells = row <$> [ys..ye]
         row y = (\x -> (x,y)) <$> [xs..xe]
         showCell c = if c `member` w then a else d
