@@ -1,9 +1,9 @@
 module Practicum3 where
 
 {-
-Name:           <Name and family name>
-VU-net id:      <VU-net id>
-Student number: <Student number>
+Name:           <Dimitri Diomaiuta>
+VU-net id:      <dda410>
+Student number: <2553339>
 Discussed with: <In case you discussed the exercises with someone else,
                  please mention his/her name(s) explicitly here>
 Remarks:        <In case something need special attention,
