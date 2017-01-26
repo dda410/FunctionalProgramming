@@ -39,10 +39,10 @@ showterm I = "I"
 showterm (App t1 t2) = "(" ++ (showterm t1) ++ (showterm t2) ++ ")"
 
 isredex :: Term -> Bool
-isredex (App t1 S) = True
-isredex (App t1 K) = True
-isredex (App t1 I) = True
-isredex (App t1 t2) = False
+isredex (App I t2) = True
+isredex (App (App K t2) t3) = True
+isredex (App (App (App S t2) t3) t4) = True
+isredex t = False
 
 isnormalform :: Term -> Bool
 isnormalform I = True
@@ -55,52 +55,29 @@ isnormalform' S = True
 isnormalform' (App t1 t2) = False
 
 outerstep :: Term -> Term
-outerstep (App t1 t2) =
-  if isredex (App t1 t2)
-  then dostep (findstep (App t1 t2)) (App t1 t2) 
-  else (App t1 t2)
-  
--- finds the Cl-term to apply the rule from
-findstep (App t1 t2) =
-  if isnormalform (App t1 t2)
-  then t1
-  else findstep t1
+outerstep (App I t2) = t2
+outerstep (App (App K t2) t3) = t2
+outerstep (App (App (App S t2) t3) t4) = (App (App t2 t4) (App t3 t4))
+outerstep t = t
 
--- dostep performs one step according to the Cl-terms rules
-dostep I (App t1 t2) = resolveI (App t1 t2) 
-dostep K (App t1 t2) = resolveK (App t1 t2)
-dostep S (App t1 t2) = resolveS (App t1 t2)
-resolveI (App I t2) = t2
-resolveI (App t1 t2) = (App (resolveI t1) t2)
-resolveK (App K t2) = t2
-resolveK (App t1 t2) =
-  if isnormalform t1
-  then (resolveK t1)
-  else (App (resolveK t1) t2)
-resolveS (App t1 t2) =
-  if isnormalform (returnT1(t1))
-  then App (App (returnT2(returnT1(t1))) t2) (App (returnT2(t1)) t2)
-  else (App (resolveS t1) t2)
-
--- returns the first term
-returnT1 (App t1 t2) = t1
--- returns the second term
-returnT2 (App t1 t2) = t2
-  
 -- Exercise  3
-data Thing = Undefined1
+data Thing = C | D | B
   deriving (Show, Eq, Bounded, Enum)
 
 nxt :: Thing -> Thing
-nxt = undefined
+nxt C = B
+nxt B = D
+nxt D = C
 
 -- Exercise 4
-data I = Undefined2
+data I = Z | O
   deriving (Show, Eq, Bounded, Enum)
 
 s :: I -> I
-s = undefined
+s Z = O
+s O = Z
 
 p :: I -> I
-p = undefined
+p Z = O
+p O = Z
 
